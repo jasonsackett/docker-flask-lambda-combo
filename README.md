@@ -1,7 +1,7 @@
 This is a simple template for a python app that is Dockerized for
-either/both use as a 
+either use as a 
 flask web app
-and/or an
+or an
 AWS docker lambda function
 
 see notes in app.py, and Dockerfile for instructions

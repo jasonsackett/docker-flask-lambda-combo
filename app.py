@@ -1,37 +1,34 @@
-from flask import Flask
+from flask import Flask, request
+import json
 
 app = Flask(__name__)
 
 
-@app.route('/')
-def hello():
+@app.route('/', methods=['GET', 'POST'])
+def flask_route():
     """
     flask endpoint example
     """
-    return f'Hello, World!'
-
-
-@app.route('/hellox/<x>')
-def hellox(x):
-    """
-    flask endpoint example
-    """
-    return f'Hello, World! {x}'
+    args = "{}"  # just to handle 'GET' (with no request.data)
+    if len(request.data) > 0:
+        args = request.data
+    return work(json.loads(args))
 
 
 def handler(event, context):
     """
-    AWS Lambda handler, default
+    AWS Lambda handler
     """
-    job_id = event.get("job_id", None)
-    ret = hellox(job_id)
-    print('from handler')
-    return ret
+    return work(event)
+
+
+def work(args):
+    return f'doing work on job_id: {args.get("job_id", 0)}'
 
 
 if __name__ == "__main__":
     _run_as_flask = False
-    _job_id = 239311
+    _job_id = 1234
     if _run_as_flask:
         app.run(debug=True)
     else:
